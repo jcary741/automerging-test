@@ -30,7 +30,8 @@ jobs:
       - name: Random delay (60-120 seconds)
         run: |
           # Generate random delay between 60 and 120 seconds
-          DELAY=$((60 + $(shuf -i 0-60 -n 1)))
+          RANDOM_OFFSET=$(shuf -i 0-60 -n 1)
+          DELAY=$((60 + RANDOM_OFFSET))
           echo "Waiting for $DELAY seconds..."
           sleep $DELAY
           echo "Delay completed!"
