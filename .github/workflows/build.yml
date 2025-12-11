@@ -1,0 +1,57 @@
+name: Build and Rename
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container:
+      image: node:alpine
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show initial directory state
+        run: |
+          echo "Initial directory contents:"
+          ls -la
+          echo ""
+          echo "Current working directory:"
+          pwd
+
+      - name: Random delay (60-120 seconds)
+        run: |
+          # Generate random delay between 60 and 120 seconds
+          DELAY=$((60 + RANDOM % 61))
+          echo "Waiting for $DELAY seconds..."
+          sleep $DELAY
+          echo "Delay completed!"
+
+      - name: Rename index.js to index.html
+        run: |
+          if [ -f "index.js" ]; then
+            echo "Renaming index.js to index.html..."
+            mv index.js index.html
+            echo "File renamed successfully!"
+          else
+            echo "Error: index.js not found!"
+            exit 1
+          fi
+
+      - name: Show final directory state
+        run: |
+          echo "Final directory contents:"
+          ls -la
+          echo ""
+          if [ -f "index.html" ]; then
+            echo "Contents of index.html:"
+            cat index.html
+          fi
